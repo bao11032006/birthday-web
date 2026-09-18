@@ -29,8 +29,8 @@ function runFirstPageSequence() {
       soundCountdown.pause();
       soundCountdown.currentTime = 0;
 
-      // Chữ HBD TIÊN! ở trang 1
-      transitionToText("HAPPY BIRTHDAY", Math.min(width / 8, 45));
+      // Chữ HAPPY BIRTHDAY ở trang 1 (có cộng thêm 30 pixel để dịch sang phải)
+      transitionToCustomText("HAPPY BIRTHDAY", Math.min(width / 8, 45), 30);
       safePlay(soundRead);
 
       // Sau đó chuyển sang ngày sinh
@@ -171,7 +171,7 @@ class LargeHeartDroneGroup {
   }
 }
 
-function createTextTargets(text, customFontSize = null) {
+function createTextTargets(text, customFontSize = null, offsetX = 0) {
   const targets = [];
   const offscreen = document.createElement('canvas');
   const offCtx = offscreen.getContext('2d');
@@ -183,7 +183,7 @@ function createTextTargets(text, customFontSize = null) {
   offCtx.fillStyle = 'white';
   offCtx.textAlign = 'center';
   offCtx.textBaseline = 'middle';
-  offCtx.fillText(text, width / 2, height / 2);
+  offCtx.fillText(text, (width / 2) + offsetX, height / 2);
 
   const imgData = offCtx.getImageData(0, 0, width, height).data;
   const step = Math.max(4, Math.floor(fontSize / 11));
@@ -246,7 +246,7 @@ function createTwoLineWishTargets() {
   offCtx1.fillStyle = 'white';
   offCtx1.textAlign = 'center';
   offCtx1.textBaseline = 'middle';
-  offCtx1.fillText("Always keep smiling!" , (width / 2) + 25, height * 0.25);
+  offCtx1.fillText("HAPPY BIRTHDAY", width / 2, height * 0.25);
 
   const imgData1 = offCtx1.getImageData(0, 0, width, height).data;
   const step1 = Math.max(4, Math.floor(fontSizeLine1 / 8));
@@ -470,7 +470,23 @@ function assignTargets(targets) {
 }
 
 function transitionToText(newText, customFontSize = null) {
-  const targets = createTextTargets(newText, customFontSize);
+  const targets = createTextTargets(newText, customFontSize, 0);
+  textParticles.forEach((p, i) => {
+    p.isExploding = false;
+    p.speed = 0.14; 
+    if (i < targets.length) {
+      p.targetX = targets[i].x;
+      p.targetY = targets[i].y;
+      p.color = targets[i].color;
+    } else {
+      p.targetX = null;
+      p.targetY = null;
+    }
+  });
+}
+
+function transitionToCustomText(newText, customFontSize = null, offsetX = 0) {
+  const targets = createTextTargets(newText, customFontSize, offsetX);
   textParticles.forEach((p, i) => {
     p.isExploding = false;
     p.speed = 0.14; 
