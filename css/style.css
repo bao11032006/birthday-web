@@ -1,0 +1,240 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #050510;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Các Cảnh (Scenes) */
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in-out;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Scene 1: Intro */
+.glow-text h1 {
+  font-size: 2.8rem;
+  color: #fff;
+  text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f;
+  animation: pulse 2s infinite alternate;
+  text-align: center;
+}
+
+.glow-text p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #e0e0e0;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.98); opacity: 0.8; }
+  100% { transform: scale(1.02); opacity: 1; }
+}
+
+/* Scene 2: Envelope & Letter */
+.envelope-wrapper {
+  position: relative;
+  width: 380px;
+  height: 250px;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f08080;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 0;
+  border-left: 190px solid transparent;
+  border-right: 190px solid transparent;
+  border-top: 130px solid #e06666;
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 3;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-pocket {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 0;
+  border-left: 190px solid #f08080;
+  border-right: 190px solid #f08080;
+  border-bottom: 130px solid #e57373;
+  border-radius: 0 0 10px 10px;
+  z-index: 3;
+}
+
+.letter {
+  position: absolute;
+  bottom: 10px; left: 15px;
+  width: 350px; height: 220px;
+  background: #fff; color: #333;
+  border-radius: 8px; padding: 20px;
+  transition: all 0.8s ease;
+  z-index: 2;
+  text-align: left;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.envelope.open .letter {
+  transform: translateY(-140px) scale(1.08);
+  height: 290px;
+  z-index: 4;
+}
+
+.letter p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* MÀN CUỐI (SCENE PHOTO) */
+.final-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.scene.active .final-container {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* BỐ CỤC 4 ẢNH HÌNH CHỮ NHẬT */
+.photos-grid-artistic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+  max-width: 1100px;
+}
+
+.photo-card-item {
+  position: relative;
+  width: 160px;
+  opacity: 0;
+  transform: scale(0) translateY(40px);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Trạng thái vị trí và góc xoay của từng ảnh */
+.photo-card-item.pos-1 { transform: translateY(-30px) rotate(-3deg) scale(0); }
+.photo-card-item.pos-1.show { opacity: 1; transform: translateY(-30px) rotate(-3deg) scale(1); }
+
+.photo-card-item.pos-2 { transform: translateY(30px) rotate(2deg) scale(0); }
+.photo-card-item.pos-2.show { opacity: 1; transform: translateY(30px) rotate(2deg) scale(1); }
+
+.photo-card-item.pos-3 { transform: translateY(-20px) rotate(3deg) scale(0); }
+.photo-card-item.pos-3.show { opacity: 1; transform: translateY(-20px) rotate(-3deg) scale(1); }
+
+.photo-card-item.pos-4 { transform: translateY(35px) rotate(-2deg) scale(0); }
+.photo-card-item.pos-4.show { opacity: 1; transform: translateY(35px) rotate(-2deg) scale(1); }
+
+.photo-card-item .photo-glow-ring {
+  position: absolute;
+  top: -8px; left: -8px;
+  right: -8px; bottom: -8px;
+  border-radius: 16px;
+  background: conic-gradient(from 0deg, #ff007f, #7928ca, #00f2fe, #ff007f);
+  animation: spinGlow 4s linear infinite;
+  filter: blur(10px);
+  opacity: 0.8;
+}
+
+@keyframes spinGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.photo-card-item .photo-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  padding: 4px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(255, 0, 127, 0.6);
+  overflow: hidden;
+}
+
+.photo-card-item .photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  display: block;
+}
+
+/* ĐIỀU CHỈNH RIÊNG TỪNG TẤM ĐỂ KHÔNG BỊ LỆCH CHỦ THỂ */
+#photoCard0 img { object-position: center center; }
+#photoCard1 img { object-position: 70% center; } /* Tấm thứ 2 */
+#photoCard2 img { object-position: center center; }
+#photoCard3 img { object-position: 65% center; } /* Tấm thứ 4 */
+
+.final-message {
+  font-size: 1.5rem;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #7928ca;
+  animation: floatText 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatText {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}

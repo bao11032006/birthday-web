@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Magical Story</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Thư viện Pháo hoa Confetti bắt buộc -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Canvas vẽ drone đếm ngược & các hiệu ứng hạt background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- SCENE 1: ĐẾM NGƯỢC DRONE (Màn hình đen hoàn toàn) -->
+  <div id="scene1" class="scene active"></div>
+
+  <!-- SCENE 2: PHONG BÌ & LÁ THƯ -->
+  <div id="scene2" class="scene">
+    <div class="envelope-wrapper">
+      <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-pocket"></div>
+        <div class="letter">
+          <p>❤️ <strong>Gửi người đặc biệt,</strong></p>
+          <p>Chúc mừng sinh nhật Tiên 🎂. Chúc Tiên tuổi mới xinh hơn, luôn vui vẻ, bình an và gặp được nhiều may mắn trong cuộc sống!</p>
+          <p>Mong rằng mọi điều Tiên mong muốn đều sẽ thành hiện thực. Happy Birthday! 🎉✨</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE PHOTO: MÀN CUỐI 4 ẢNH TỶ LỆ 9:16 LỆCH NGHỆ THUẬT -->
+  <div id="scenePhoto" class="scene">
+    <div class="final-container">
+      <div class="photos-grid-artistic">
+        <!-- Ảnh 1 (Lệch trên) -->
+        <div class="photo-card-item pos-1" id="photoCard0">
+          <div class="photo-glow-ring"></div>
+          <div class="photo-frame">
+            <img src="images/anh1.jpg" alt="Khoảnh khắc 1">
+          </div>
+        </div>
+        <!-- Ảnh 2 (Lệch dưới) -->
+        <div class="photo-card-item pos-2" id="photoCard1">
+          <div class="photo-glow-ring"></div>
+          <div class="photo-frame">
+            <img src="images/anh2.jpg" alt="Khoảnh khắc 2">
+          </div>
+        </div>
+        <!-- Ảnh 3 (Lệch trên) -->
+        <div class="photo-card-item pos-3" id="photoCard2">
+          <div class="photo-glow-ring"></div>
+          <div class="photo-frame">
+            <img src="images/anh3.jpg" alt="Khoảnh khắc 3">
+          </div>
+        </div>
+        <!-- Ảnh 4 (Lệch dưới) -->
+        <div class="photo-card-item pos-4" id="photoCard3">
+          <div class="photo-glow-ring"></div>
+          <div class="photo-frame">
+            <img src="images/anh4.jpg" alt="Khoảnh khắc 4">
+          </div>
+        </div>
+      </div>
+      <h2 class="final-message">✨ Wishing You All The Best & Happiness! ✨</h2>
+    </div>
+  </div>
+
+  <!-- Nhúng file Script -->
+  <script src="js/script.js"></script>
+</body>
+</html>
