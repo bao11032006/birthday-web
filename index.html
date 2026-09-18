@@ -13,8 +13,10 @@
   <!-- Canvas vẽ drone đếm ngược & các hiệu ứng hạt background -->
   <canvas id="particleCanvas"></canvas>
 
-  <!-- SCENE 1: ĐẾM NGƯỢC DRONE (Màn hình đen hoàn toàn) -->
-  <div id="scene1" class="scene active"></div>
+  <!-- SCENE 1: ĐẾM NGƯỢC DRONE (Đã bọc thêm khung chuẩn để JS đổ nội dung không bị vỡ) -->
+  <div id="scene1" class="scene active">
+    <div class="scene1-content"></div>
+  </div>
 
   <!-- SCENE 2: PHONG BÌ & LÁ THƯ -->
   <div id="scene2" class="scene">
