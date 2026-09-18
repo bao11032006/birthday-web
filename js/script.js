@@ -246,7 +246,7 @@ function createTwoLineWishTargets() {
   offCtx1.fillStyle = 'white';
   offCtx1.textAlign = 'center';
   offCtx1.textBaseline = 'middle';
-  offCtx1.fillText("Always keep smiling!" , width / 2, height * 0.25);
+  offCtx1.fillText("Always keep smiling!" , (width / 2) + 25, height * 0.25);
 
   const imgData1 = offCtx1.getImageData(0, 0, width, height).data;
   const step1 = Math.max(4, Math.floor(fontSizeLine1 / 8));
