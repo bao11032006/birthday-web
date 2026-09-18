@@ -29,24 +29,25 @@ function runFirstPageSequence() {
       soundCountdown.pause();
       soundCountdown.currentTime = 0;
 
-      // 1. Chuyển chữ thành HAPPY BIRTHDAY VÀ PHÁT NHẠC ĐỌC (nhac2.mp3) NGAY LẬP TỨC TẠI ĐÂY
-      transitionToText("HAPPY BIRTHDAY", Math.min(width / 11, 52));
+      // Chữ HBD TIÊN! ở trang 1
+      transitionToText("HAPPY BIRTHDAY", Math.min(width / 8, 45));
       safePlay(soundRead);
 
-      // 2. Sau một khoảng thời gian (ví dụ 3 giây), chuyển sang ngày sinh
+      // Sau đó chuyển sang ngày sinh
       setTimeout(() => {
         transitionToText("19/9/2007");
       }, 3000);
 
-      // 3. Tiếp tục sau đó, chuyển sang năm
+      // Tiếp tục chuyển sang năm hiện tại
       setTimeout(() => {
         transitionToText("19/9/2026");
       }, 6000);
 
-      // 4. Đợi đọc xong toàn bộ chuỗi trang đầu thì chuyển sang trang 2 và các hiệu ứng sau
+      // Chuyển sang trang 2 và các hiệu ứng sau
       setTimeout(() => {
         mode = 'SWIRL';
-        document.getElementById('scene1').classList.remove('active');
+        const scene1 = document.getElementById('scene1');
+        if (scene1) scene1.classList.remove('active');
         
         const targets = createCombinedTextTargets();
         assignTargets(targets);
@@ -59,21 +60,24 @@ function runFirstPageSequence() {
 
         // Mở thư ở trang 2
         setTimeout(() => {
-          document.getElementById('scene2').classList.add('active');
+          const scene2 = document.getElementById('scene2');
+          if (scene2) scene2.classList.add('active');
           const envelope = document.getElementById('envelope');
           if (envelope) envelope.classList.add('open');
         }, 10000);
 
-        // Hiệu ứng lời chúc
+        // Hiệu ứng chữ HAPPY BIRTHDAY
         setTimeout(() => {
-          document.getElementById('scene2').classList.remove('active');
+          const scene2 = document.getElementById('scene2');
+          if (scene2) scene2.classList.remove('active');
           startSwirlAndFormTwoLineWish(1200);
         }, 22000);
 
         // Hiệu ứng trái tim và hiện ảnh / pháo hoa ở trang cuối
         setTimeout(() => {
           formHeartShape();
-          document.getElementById('scenePhoto').classList.add('active');
+          const scenePhoto = document.getElementById('scenePhoto');
+          if (scenePhoto) scenePhoto.classList.add('active');
           triggerMegaFireworks();
 
           for (let k = 0; k < 4; k++) {
@@ -91,7 +95,7 @@ function runFirstPageSequence() {
 
 // --- KHỞI TẠO CANVAS VÀ CÁC HIỆU ỨNG HẠT, ẢNH, PHÁO HOA ---
 const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 
 let width, height;
 let textParticles = [];        
@@ -102,6 +106,7 @@ let mode = 'COUNTDOWN';
 let cakeAngle = 0;
 
 function resize() {
+  if (!canvas) return;
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 }
@@ -151,6 +156,7 @@ class LargeHeartDroneGroup {
   }
 
   draw() {
+    if (!ctx) return;
     this.particles.forEach(p => {
       ctx.save();
       ctx.globalAlpha = p.alpha;
@@ -172,7 +178,7 @@ function createTextTargets(text, customFontSize = null) {
   offscreen.width = width;
   offscreen.height = height;
 
-  const fontSize = customFontSize || Math.min(width / 7, 85);
+  const fontSize = customFontSize || Math.min(width / 8, 60);
   offCtx.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
   offCtx.fillStyle = 'white';
   offCtx.textAlign = 'center';
@@ -218,30 +224,29 @@ function createCombinedTextTargets() {
     }
   };
 
-  const fontSizeHBBD = Math.min(width / 8, 65);
+  const fontSizeHBBD = Math.min(width / 9, 50);
   addTextToTargets("HAPPY BIRTHDAY", fontSizeHBBD, width / 2, height * 0.12, 'center', 'middle', '#ff1744');
 
-  const fontSizeName = Math.min(width / 8.5, 45);
-  addTextToTargets("NGUYEN THI", fontSizeName, width / 2, height * 0.23, 'center', 'middle', '#ff5252');
-  addTextToTargets("CAM TIEN", fontSizeName, width / 2, height * 0.33, 'center', 'middle', '#ff5252');
+  const fontSizeName = Math.min(width / 9.5, 38);
+  addTextToTargets("NGUYỄN THỊ", fontSizeName, width / 2, height * 0.23, 'center', 'middle', '#ff5252');
+  addTextToTargets("CẨM TIÊN", fontSizeName, width / 2, height * 0.33, 'center', 'middle', '#ff5252');
 
   return targets;
 }
 
 function createTwoLineWishTargets() {
   const targets = [];
-  
   const offscreen1 = document.createElement('canvas');
   const offCtx1 = offscreen1.getContext('2d');
   offscreen1.width = width;
   offscreen1.height = height;
 
-  const fontSizeLine1 = Math.min(width / 14, 38);
+  const fontSizeLine1 = Math.min(width / 10, 40);
   offCtx1.font = `900 ${fontSizeLine1}px Arial, Helvetica, sans-serif`;
   offCtx1.fillStyle = 'white';
   offCtx1.textAlign = 'center';
   offCtx1.textBaseline = 'middle';
-  offCtx1.fillText("Chuc mung ngay thien than chao doi.", width / 2, height * 0.18);
+  offCtx1.fillText("Always keep smiling!" , width / 2, height * 0.25);
 
   const imgData1 = offCtx1.getImageData(0, 0, width, height).data;
   const step1 = Math.max(4, Math.floor(fontSizeLine1 / 8));
@@ -250,52 +255,6 @@ function createTwoLineWishTargets() {
     for (let x = 0; x < width; x += step1) {
       if (imgData1[(y * width + x) * 4 + 3] > 128) {
         targets.push({ x, y, color: '#ff1744' });
-      }
-    }
-  }
-
-  const offscreen2 = document.createElement('canvas');
-  const offCtx2 = offscreen2.getContext('2d');
-  offscreen2.width = width;
-  offscreen2.height = height;
-
-  const fontSizeLine2 = Math.min(width / 15, 34);
-  offCtx2.font = `900 ${fontSizeLine2}px Arial, Helvetica, sans-serif`;
-  offCtx2.fillStyle = 'white';
-  offCtx2.textAlign = 'center';
-  offCtx2.textBaseline = 'middle';
-  offCtx2.fillText("Chuc em tuoi moi luon luon vui ve", width / 2, height * 0.32);
-
-  const imgData2 = offCtx2.getImageData(0, 0, width, height).data;
-  const step2 = Math.max(4, Math.floor(fontSizeLine2 / 8));
-
-  for (let y = 0; y < height; y += step2) {
-    for (let x = 0; x < width; x += step2) {
-      if (imgData2[(y * width + x) * 4 + 3] > 128) {
-        targets.push({ x, y, color: '#ff5252' });
-      }
-    }
-  }
-
-  const offscreen3 = document.createElement('canvas');
-  const offCtx3 = offscreen3.getContext('2d');
-  offscreen3.width = width;
-  offscreen3.height = height;
-
-  const fontSizeLine3 = Math.min(width / 15, 34);
-  offCtx3.font = `900 ${fontSizeLine3}px Arial, Helvetica, sans-serif`;
-  offCtx3.fillStyle = 'white';
-  offCtx3.textAlign = 'center';
-  offCtx3.textBaseline = 'middle';
-  offCtx3.fillText("va gap that nhieu tot dep nhe. <3", width / 2, height * 0.46);
-
-  const imgData3 = offCtx3.getImageData(0, 0, width, height).data;
-  const step3 = Math.max(4, Math.floor(fontSizeLine3 / 8));
-
-  for (let y = 0; y < height; y += step3) {
-    for (let x = 0; x < width; x += step3) {
-      if (imgData3[(y * width + x) * 4 + 3] > 128) {
-        targets.push({ x, y, color: '#ff8a80' });
       }
     }
   }
@@ -344,6 +303,7 @@ class BackgroundParticle {
   }
 
   draw() {
+    if (!ctx) return;
     ctx.save();
     ctx.globalAlpha = Math.max(0, this.alpha);
     ctx.beginPath();
@@ -382,6 +342,7 @@ class CakeParticle {
   }
 
   draw() {
+    if (!ctx) return;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
@@ -443,7 +404,7 @@ class TextParticle {
   }
 
   draw() {
-    if (this.alpha < 0.01) return;
+    if (!ctx || this.alpha < 0.01) return;
     
     ctx.save();
     ctx.globalAlpha = Math.max(0, Math.min(1, this.alpha));
@@ -612,6 +573,7 @@ function triggerMegaFireworks() {
 }
 
 function animate() {
+  if (!ctx) return;
   cakeAngle += 0.015;
 
   if (mode === 'COUNTDOWN') {
